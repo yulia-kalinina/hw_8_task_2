@@ -2,24 +2,26 @@ const Listing = ({ items = [] }) => {
   const { listing_id, url, MainImage, title, currency_code, price, quantity } =
     items;
 
+  let quantityClassMarker = "";
+
   return (
     <div className="item-list">
-      {items.map((elem, index) => {
+      {items.map((elem) => {
         if (elem.quantity > 20) {
-          elem.quantityClassMarker = "level-high";
+          quantityClassMarker = "level-high";
         } else if (elem.quantity > 10) {
-          elem.quantityClassMarker = "level-medium";
+          quantityClassMarker = "level-medium";
         } else if (elem.quantity < 10) {
-          elem.quantityClassMarker = "level-low";
+          quantityClassMarker = "level-low";
         }
 
-        const combinedClass = elem.quantityClassMarker + " " + "item-quantity";
+        const combinedClass = quantityClassMarker + " " + "item-quantity";
 
-        elem.sliceTitle = elem.title.slice(0, 50);
-        if (elem.sliceTitle.length < elem.title.length) {
-          elem.sliceTitle += "...";
+        let sliceTitle = elem.title.slice(0, 50);
+        if (sliceTitle.length < elem.title.length) {
+          sliceTitle += "...";
         }
-        console.log(elem.sliceTitle);
+        console.log(sliceTitle);
 
         if (elem.state === "active")
           return (
@@ -30,7 +32,7 @@ const Listing = ({ items = [] }) => {
                 </a>
               </div>
               <div className="item-details">
-                <p className="item-title">{elem.sliceTitle}</p>
+                <p className="item-title">{elem.title || "Test text"}</p>
                 <p className="item-price">
                   {elem.currency_code} {elem.price}
                 </p>
@@ -38,6 +40,10 @@ const Listing = ({ items = [] }) => {
               </div>
             </div>
           );
+
+        if (elem.state !== "active") {
+          return <div key={elem.listing_id}></div>;
+        }
       })}
     </div>
   );
