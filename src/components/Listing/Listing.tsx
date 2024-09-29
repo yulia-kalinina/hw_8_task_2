@@ -1,8 +1,9 @@
-const Listing = ({ items = [] }) => {
-  const { listing_id, url, MainImage, title, currency_code, price, quantity } =
-    items;
+import React from "react";
+import { ICard } from "../../models/ICard";
 
-  let quantityClassMarker = "";
+const Listing = ({ items = [] }: { items: ICard[] }): React.JSX.Element => {
+  
+  let quantityClassMarker: string = "";
 
   return (
     <div className="item-list">
@@ -15,13 +16,17 @@ const Listing = ({ items = [] }) => {
           quantityClassMarker = "level-low";
         }
 
-        const combinedClass = quantityClassMarker + " " + "item-quantity";
+        const combinedClass: string = quantityClassMarker + " " + "item-quantity";
 
-        let sliceTitle = elem.title.slice(0, 50);
-        if (sliceTitle.length < elem.title.length) {
-          sliceTitle += "...";
+        let sliceTitle: string;
+        if ("title" in elem) {
+          sliceTitle = elem.title.slice(0, 50);
+          if (sliceTitle.length < elem.title.length) {
+            sliceTitle += "...";
+          }
+        } else {
+          sliceTitle = "";
         }
-        console.log(sliceTitle);
 
         if (elem.state === "active")
           return (
